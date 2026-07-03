@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Maafin Aku 🥺</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+overflow:hidden;
+background:linear-gradient(135deg,#ffd6e8,#ffeaf3,#fff7fb);
+position:relative;
+}
+
+body::before{
+content:"";
+position:absolute;
+font-size:45px;
+opacity:.08;
+animation:float 18s linear infinite;
+white-space:nowrap;
+}
+
+@keyframes float{
+from{
+transform:translateY(110vh);
+}
+to{
+transform:translateY(-120vh);
+}
+}
+
+.card{
+
+width:370px;
+max-width:92%;
+
+background:rgba(255,255,255,.35);
+
+backdrop-filter:blur(20px);
+
+padding:30px;
+
+border-radius:28px;
+
+box-shadow:0 20px 40px rgba(0,0,0,.15);
+
+text-align:center;
+
+position:relative;
+
+animation:pop .8s;
+
+}
+
+@keyframes pop{
+
+from{
+transform:scale(.8);
+opacity:0;
+}
+
+to{
+transform:scale(1);
+opacity:1;
+}
+
+}
+
+img{
+width:180px;
+border-radius:18px;
+margin-bottom:20px;
+}
+
+h1{
+color:#ff4d85;
+margin-bottom:15px;
+}
+
+#typing{
+color:#555;
+line-height:1.7;
+min-height:110px;
+}
+
+.buttons{
+
+position:relative;
+margin-top:25px;
+height:80px;
+
+}
+
+button{
+
+position:absolute;
+
+border:none;
+
+padding:13px 30px;
+
+border-radius:50px;
+
+cursor:pointer;
+
+font-size:17px;
+
+transition:.25s;
+
+}
+
+#yes{
+
+left:40px;
+
+background:#ff4d85;
+
+color:white;
+
+box-shadow:0 0 20px #ff9cbe;
+
+}
+
+#yes:hover{
+
+transform:scale(1.07);
+
+}
+
+#no{
+
+left:220px;
+top:0;
+
+background:white;
+
+color:#ff4d85;
+
+}
+
+.popup{
+
+position:fixed;
+
+inset:0;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+background:rgba(0,0,0,.45);
+
+opacity:0;
+
+visibility:hidden;
+
+transition:.3s;
+
+}
+
+.popup.show{
+
+opacity:1;
+
+visibility:visible;
+
+}
+
+.box{
+
+background:white;
+
+padding:30px;
+
+width:330px;
+
+border-radius:20px;
+
+text-align:center;
+
+animation:pop .4s;
+
+}
+
+.box h2{
+
+color:#ff4d85;
+
+margin-bottom:15px;
+
+}
+
+.box button{
+
+position:relative;
+
+left:0;
+
+margin-top:20px;
+
+background:#ff4d85;
+
+color:white;
+
+}
+
+canvas{
+
+position:fixed;
+
+left:0;
+top:0;
+
+pointer-events:none;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<canvas id="canvas"></canvas>
+
+<div class="card">
+
+<img src="https://media.tenor.com/RZqHV9heHioAAAAM/uwu-anime.gif">
+
+<h1>Maafin Aku Yaa renn</h1>
+
+<p id="typing"></p>
+
+<div class="buttons">
+
+<button id="yes">
+DiMaafin 😸
+</button>
+
+<button id="no">
+Engga dimaafin😿
+</button>
+
+</div>
+
+</div>
+
+<div class="popup" id="popup">
+
+<div class="box">
+
+<h2>Yeaaaay</h2>
+
+<p>
+
+Makasiiih yaaa renn udaah maafin aku  
+btw buka dong block nyaa renn 
+
+</p>
+
+<button onclick="closePopup()">
+
+:D
+
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+const text="aku tahu aku bikin kamu bete terus kamu nge block aku tahu kamu bete karna aku sering kasih alasan engga ada baterai terus ternyata aku main ama teman ku tapi aku tu sebenarnya engga enakan kalo ada teman kamu yg mau ikut atow siapa gitu jadinya aku beralasan biar ada slot kosong sebernya aku tu kayak engga enakan sama teman kamu yg mau ikut apalagi slot nye penuh , maaf yaaa";
+
+let i=0;
+
+function typing(){
+
+if(i<text.length){
+
+document.getElementById("typing").innerHTML+=text.charAt(i);
+
+i++;
+
+setTimeout(typing,35);
+
+}
+
+}
+
+typing();
+
+const no=document.getElementById("no");
+const yes=document.getElementById("yes");
+
+const words=[
+"Engga 😿",
+"Yakin? 😿",
+"Bener Nih? 😿 ",
+"Jahaaat bangget 😿",
+"Pliss 😿",
+"Kasian Aku 😿",
+"Maafin Dong 😿"
+];
+
+let count=0;
+
+function move(){
+
+count++;
+
+no.innerHTML=words[count%words.length];
+
+const card=document.querySelector(".card");
+
+const cardRect=card.getBoundingClientRect();
+
+const yesRect=yes.getBoundingClientRect();
+
+let x,y,distance;
+
+do{
+
+x=Math.random()*(cardRect.width-120);
+
+y=Math.random()*25;
+
+const dx=x-(yesRect.left-cardRect.left);
+
+const dy=y-(yesRect.top-cardRect.top);
+
+distance=Math.sqrt(dx*dx+dy*dy);
+
+}while(distance<150);
+
+no.style.left=x+"px";
+no.style.top=y+"px";
+
+}
+
+no.addEventListener("mouseover",move);
+
+no.addEventListener("touchstart",function(e){
+
+e.preventDefault();
+
+move();
+
+});
+
+document.getElementById("yes").onclick=function(){
+
+document.getElementById("popup").classList.add("show");
+
+confetti();
+
+}
+
+function closePopup(){
+
+document.getElementById("popup").classList.remove("show");
+
+}
+
+const canvas=document.getElementById("canvas");
+
+const ctx=canvas.getContext("2d");
+
+canvas.width=innerWidth;
+
+canvas.height=innerHeight;
+
+function confetti(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+for(let i=0;i<220;i++){
+
+ctx.fillStyle=`hsl(${Math.random()*360},100%,70%)`;
+
+ctx.fillRect(
+
+Math.random()*canvas.width,
+
+Math.random()*canvas.height,
+
+6,
+
+6
+
+);
+
+}
+
+setTimeout(()=>{
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+},1000);
+
+}
+
+window.onresize=()=>{
+
+canvas.width=innerWidth;
+
+canvas.height=innerHeight;
+
+}
+
+</script>
+
+</body>
+</html>
